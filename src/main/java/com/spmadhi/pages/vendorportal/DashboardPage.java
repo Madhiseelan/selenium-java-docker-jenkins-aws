@@ -21,7 +21,7 @@ public class DashboardPage extends AbstractPage {
     private WebElement availableInventoryElement;
     @FindBy(css = "#dataTable_filter input")
     private WebElement searchInput;
-    @FindBy(css = "dataTable_info")
+    @FindBy(id = "dataTable_info")
     private WebElement searchResultsCountElement;
     @FindBy(css = "img.img-profile")
     private WebElement userProfilePicture;
@@ -69,8 +69,11 @@ public class DashboardPage extends AbstractPage {
     }
 
     public void logOut(){
-        this.wait.until(ExpectedConditions.elementToBeClickable(this.userProfilePicture)).click();
-        this.wait.until(ExpectedConditions.elementToBeClickable(this.logoutLink)).click();
-        this.wait.until(ExpectedConditions.elementToBeClickable(this.modalLogoutButton)).click();
+        this.wait.until(ExpectedConditions.visibilityOf(this.userProfilePicture));
+        this.userProfilePicture.click();
+        this.wait.until(ExpectedConditions.visibilityOf(this.logoutLink));
+        this.logoutLink.click();
+        this.wait.until(ExpectedConditions.visibilityOf(this.modalLogoutButton));
+        this.modalLogoutButton.click();
     }
 }
