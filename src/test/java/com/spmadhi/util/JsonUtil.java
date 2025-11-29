@@ -1,0 +1,25 @@
+package com.spmadhi.util;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spmadhi.tests.vendorportal.model.VendorPortalTestData;
+import org.openqa.selenium.bidi.module.Input;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.InputStream;
+
+public class JsonUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(JsonUtil.class);
+    //ObjectMapper is responsible for converting the input stream into a java object
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    public static VendorPortalTestData getTestData(String path){
+        try(InputStream stream = ResourceLoader.getResource(path)){
+            return mapper.readValue(stream, VendorPortalTestData.class);
+        }catch(Exception e){
+            log.error("unable to read test data file..! {}", path, e);
+        }
+        return null;
+    }
+}
