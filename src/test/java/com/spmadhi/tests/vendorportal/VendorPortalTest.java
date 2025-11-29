@@ -1,7 +1,9 @@
 package com.spmadhi.tests.vendorportal;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.spmadhi.pages.vendorportal.DashboardPage;
 import com.spmadhi.pages.vendorportal.LoginPage;
+import com.spmadhi.tests.BaseTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import net.bytebuddy.asm.Advice;
 import org.openqa.selenium.WebDriver;
@@ -11,18 +13,17 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class VendorPortalTest {
-
-    private WebDriver driver;
+public class VendorPortalTest extends BaseTest {
+    private LoginPage loginPage;
+    private DashboardPage dashboardPage;
 
     @BeforeTest
-    public void serDriver(){
-        WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
+    public void setupTest(){
+        this.loginPage = new LoginPage(driver);
+        this.dashboardPage = new DashboardPage(driver);
     }
     @Test
     public void loginTest(){
-        LoginPage loginPage = new LoginPage(driver);
         loginPage.goTo("https://d1uh9e7cu07ukd.cloudfront.net/selenium-docker/vendor-app/index.html");
         Assert.assertTrue(loginPage.isAt());
         loginPage.login("sam", "sam");
@@ -30,7 +31,6 @@ public class VendorPortalTest {
 
     @Test(dependsOnMethods = "loginTest")
     public void dashboardTest(){
-        DashboardPage dashboardPage = new DashboardPage(driver);
         Assert.assertTrue(dashboardPage.isAt());
 
         //Finance Metrics
@@ -42,18 +42,11 @@ public class VendorPortalTest {
         //Order History Search
         dashboardPage.searchOrderHistoryBy("adams");
         Assert.assertEquals(dashboardPage.getSearchResultsCount(), 8);
-
-        //Logout
+    }
+    @Test(dependsOnMethods = "dashboardTest")
+    public void logoutTest(){
         dashboardPage.logOut();
+        Assert.assertTrue(loginPage.isAt());
     }
 
-    @AfterTest
-    public void quickDriver(){
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        this.driver.quit();
-    }
 }

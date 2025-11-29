@@ -1,6 +1,7 @@
 package com.spmadhi.tests.flightreservation;
 
 import com.spmadhi.pages.flightreservation.*;
+import com.spmadhi.tests.BaseTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,26 +11,21 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-public class FlightReservationTest {
-
-    private WebDriver driver;
+public class FlightReservationTest extends BaseTest {
     private String noOfPassengers;
     private String expectedPrice;
+    private RegistrationPage registrationPage;
 
     @BeforeTest
     @Parameters({"noOfPassengers", "expectedPrice"})
-    public void setDriver(String noOfPassengers, String expectedPrice){
+    public void setParameters(String noOfPassengers, String expectedPrice){
         this.noOfPassengers = noOfPassengers;
         this.expectedPrice = expectedPrice;
-
-        //Driver Setup
-        WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
+        this.registrationPage = new RegistrationPage(driver);
     }
 
     @Test
     public void userRegistrationTest(){
-        RegistrationPage registrationPage = new RegistrationPage(driver);
         String url = "https://d1uh9e7cu07ukd.cloudfront.net/selenium-docker/reservation-app/index.html";
         registrationPage.goTo(url);
         Assert.assertTrue(registrationPage.isAt());
@@ -68,10 +64,5 @@ public class FlightReservationTest {
         Assert.assertTrue(flightConfirmationPage.isAt());
 
         Assert.assertEquals(flightConfirmationPage.getPrice(), expectedPrice);
-    }
-
-    @AfterTest
-    public void quitDriver(){
-        this.driver.quit();
     }
 }
