@@ -1,0 +1,11 @@
+{
+  "firstName": "michael",
+  "lastName": "jackson",
+  "email": "madhi@gmail.com",
+  "password": "asdghfkk@345665",
+  "street": "123 main street",
+  "city": "Aalanta",
+  "zip": "50001",
+  "passengersCount": "1",
+  "expectedPrice": "$584 USD"
+}
