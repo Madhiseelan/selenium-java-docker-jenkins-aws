@@ -13,14 +13,14 @@ public abstract class BaseTest {
     protected WebDriver driver;
 
     @BeforeTest
-    public void serDriver(){
+    public void setDriver(){
         WebDriverManager.chromedriver().setup();
         this.driver = new ChromeDriver();
 
     }
 
     @AfterTest
-    public void quickDriver(){
+    public void quitDriver(){
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

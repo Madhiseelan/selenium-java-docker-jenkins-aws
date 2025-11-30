@@ -33,8 +33,9 @@ public class FlightsSelectionPage extends AbstractPage {
         this.departureFlightsOptions.get(random).click();
         this.arrivalFlightSOptions.get(random).click();
 
-        //this.confirmFlightsButton.click();
-        this.wait.until(ExpectedConditions.elementToBeClickable(this.confirmFlightsButton)).click();
+        //this.wait.until(ExpectedConditions.elementToBeClickable(this.confirmFlightsButton)).click();
+        this.wait.until(ExpectedConditions.visibilityOf(this.confirmFlightsButton));
+        this.confirmFlightsButton.click();
 
     }
 }

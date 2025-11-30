@@ -2,6 +2,8 @@ package com.spmadhi.tests.flightreservation;
 
 import com.spmadhi.pages.flightreservation.*;
 import com.spmadhi.tests.BaseTest;
+import com.spmadhi.tests.flightreservation.model.FlightReservationTestData;
+import com.spmadhi.util.JsonUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,10 +14,14 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class FlightReservationTest extends BaseTest {
-    private String noOfPassengers;
-    private String expectedPrice;
+
+    private FlightReservationTestData testData;
     private RegistrationPage registrationPage;
 
+    /* Below Example when we get the parameters from xml file.
+    Other following method example to get the parameters from Json file.
+    private String noOfPassengers;
+    private String expectedPrice;
     @BeforeTest
     @Parameters({"noOfPassengers", "expectedPrice"})
     public void setParameters(String noOfPassengers, String expectedPrice){
@@ -23,16 +29,24 @@ public class FlightReservationTest extends BaseTest {
         this.expectedPrice = expectedPrice;
         this.registrationPage = new RegistrationPage(driver);
     }
+    */
+    @BeforeTest
+    @Parameters({"testDataPath"})
+    public void setParameters(String testDataPath){
+        this.testData = JsonUtil.getTestData(testDataPath, FlightReservationTestData.class);
+
+    }
 
     @Test
     public void userRegistrationTest(){
+        this.registrationPage = new RegistrationPage(driver);
         String url = "https://d1uh9e7cu07ukd.cloudfront.net/selenium-docker/reservation-app/index.html";
         registrationPage.goTo(url);
         Assert.assertTrue(registrationPage.isAt());
 
-        registrationPage.enterUserDetails("selenoum", "docker");
-        registrationPage.userCredentials("seleciummadhi@docker.com", "test123");
-        registrationPage.enterAddress("12 Talbot Street","atlanta","30002");
+        registrationPage.enterUserDetails(testData.getFirstName(), testData.getLastName());
+        registrationPage.userCredentials(testData.getEmail(), testData.getPassword());
+        registrationPage.enterAddress(testData.getStreet(), testData.getCity(), testData.getZip());
         registrationPage.register();
     }
 
@@ -47,7 +61,7 @@ public class FlightReservationTest extends BaseTest {
     public void flightsSearchTest(){
         FlightsSearchPage flightsSearchPage = new FlightsSearchPage(driver);
         Assert.assertTrue(flightsSearchPage.isAt());
-        flightsSearchPage.selectPassengers(noOfPassengers);
+        flightsSearchPage.selectPassengers(testData.getPassengersCount());
         flightsSearchPage.searchFlights();
     }
 
@@ -63,6 +77,6 @@ public class FlightReservationTest extends BaseTest {
         FlightConfirmationPage flightConfirmationPage = new FlightConfirmationPage(driver);
         Assert.assertTrue(flightConfirmationPage.isAt());
 
-        Assert.assertEquals(flightConfirmationPage.getPrice(), expectedPrice);
+        Assert.assertEquals(flightConfirmationPage.getPrice(), testData.getExpectedPrice());
     }
 }

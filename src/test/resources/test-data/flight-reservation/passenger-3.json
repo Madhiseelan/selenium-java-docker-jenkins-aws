@@ -1,0 +1,11 @@
+{
+  "firstName": "kaleb",
+  "lastName": "parks",
+  "email": "krolez@gmail.com",
+  "password": "jfndgjavbryb@6582g",
+  "street": "876 park street",
+  "city": "hartford",
+  "zip": "87634",
+  "passengersCount": "3",
+  "expectedPrice": "$1753 USD"
+}

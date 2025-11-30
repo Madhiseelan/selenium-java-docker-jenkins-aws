@@ -1,17 +1,10 @@
 package com.spmadhi.tests.vendorportal;
-
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.spmadhi.pages.vendorportal.DashboardPage;
 import com.spmadhi.pages.vendorportal.LoginPage;
 import com.spmadhi.tests.BaseTest;
 import com.spmadhi.tests.vendorportal.model.VendorPortalTestData;
 import com.spmadhi.util.JsonUtil;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import net.bytebuddy.asm.Advice;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -26,7 +19,7 @@ public class VendorPortalTest extends BaseTest {
     public void setupTest(String testDataPath){
         this.loginPage = new LoginPage(driver);
         this.dashboardPage = new DashboardPage(driver);
-        this.testData = JsonUtil.getTestData(testDataPath);
+        this.testData = JsonUtil.getTestData(testDataPath,VendorPortalTestData.class);
     }
     @Test
     public void loginTest(){
